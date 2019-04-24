@@ -1,0 +1,45 @@
+{
+  "name": "labs12-real-estate-BE",
+  "version": "1.0.0",
+  "description": "API For MyHouse",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "test": "cross-env DB_ENV=testing jest --watch --verbose --runInBand"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.13.2",
+    "cors": "^2.8.5",
+    "datauri": "^1.1.0",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "helmet": "^3.16.0",
+    "jsonwebtoken": "^8.5.0",
+    "knex": "^0.16.3",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.1",
+    "pg": "^7.8.2",
+    "sqlite3": "^4.0.6"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "faker": "^4.1.0",
+    "jest": "^24.3.1",
+    "nodemon": "^1.18.10",
+    "supertest": "^3.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/labs12-real-estate/labs12-real-estate-BE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/labs12-real-estate/labs12-real-estate-BE/issues"
+  },
+  "homepage": "https://github.com/labs12-real-estate/labs12-real-estate-BE#readme"
+}

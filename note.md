@@ -7,17 +7,18 @@
 #   users/
         users-model.js
         users-router.js
-        users.test.js
+        users.spec.js
 
 #   houses/
         houses-model.js
         houses-router.js
-        houses.test.js
+        houses.spec.js
 
 #   auth/
 
 #   api/
         server.js
+        server.spec.js
 
 #   database/
 
