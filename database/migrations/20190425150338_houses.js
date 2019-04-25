@@ -7,6 +7,10 @@ exports.up = function(knex, Promise) {
     tbl.string('recent_remodel');
     tbl.string('upgrades');
     tbl.integer('userId');
+    tbl
+      .foreign('userId')
+      .references('users.userId')
+      .onDelete('CASCADE');
 
     tbl.string('user_data_countertops');
     tbl.integer('user_data_ac_furnace_age');
