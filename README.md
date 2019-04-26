@@ -10,6 +10,7 @@ To get the server running locally:
 - Clone this repo
 - `yarn install` to install all required dependencies
 - `yarn server` to start the local server
+- `yarn test` to start server using testing environment
 
 # Dependencies
 

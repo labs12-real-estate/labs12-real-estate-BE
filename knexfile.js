@@ -1,40 +1,39 @@
-
 module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/MyHouse.db3',
+      filename: './database/MyHouse.db3'
     },
     useNullAsDefault: true,
     migrations: {
-      directory: './data/migrations',
+      directory: './database/migrations'
     },
     seeds: {
-      directory: './data/seeds',
-    },
+      directory: './database/seeds'
+    }
   },
   testing: {
     client: 'sqlite3',
     connection: {
-      filename: './data/Testing.db3',
+      filename: './database/Testing.db3'
     },
     useNullAsDefault: true,
     migrations: {
-      directory: './data/migrations',
+      directory: './database/migrations'
     },
     seeds: {
-      directory: './data/seeds',
-    },
+      directory: './database/seeds'
+    }
   },
 
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: process.env.DATAbaseBASE_URL,
     migrations: {
-      directory: './data/migrations',
+      directory: './database/migrations'
     },
     seeds: {
-      directory: './data/seeds',
-    },
-  },
+      directory: './database/seeds'
+    }
+  }
 };
