@@ -18,6 +18,7 @@ function remove() {
 }
 
 function getAll() {
+  return db('users');
 }
 
 function findById() {

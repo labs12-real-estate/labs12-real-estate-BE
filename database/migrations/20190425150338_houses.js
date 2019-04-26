@@ -9,8 +9,11 @@ exports.up = function(knex, Promise) {
     tbl.integer('userId');
     tbl
       .foreign('userId')
+      .unsigned()
       .references('users.userId')
-      .onDelete('CASCADE');
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE')
+      .notNullable();
 
     tbl.string('user_data_countertops');
     tbl.integer('user_data_ac_furnace_age');
