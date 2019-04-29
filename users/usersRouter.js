@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
   try {
     const user = await Users.create(req.body);
     if (!user) {
-      return res.status(422).json({ message: 'Both email and password are required' });
+      return res.status(422).json({ message: 'Both email and password are required.' });
     }
     return res.status(200).json(user);
   } catch (error) {
