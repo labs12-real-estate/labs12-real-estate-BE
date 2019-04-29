@@ -5,13 +5,18 @@ const create = async user => {
     return null;
   }
   //Destructure the created users ID from the array received from the insert method.
-  const [newUserId] = await db('users').insert(user);
+  const [newUserId] = await db('users').insert(user, 'userId');
   //Find the created user based on the id we receieved from the insert method.
   const createdUser = await db('users')
     .where({ userId: newUserId })
     .first();
   //Return the created user.
   return createdUser;
+};
+
+const get = async () => {
+  const foundUsers = await db('users');
+  return foundUsers;
 };
 
 const getOne = async filter => {
@@ -58,6 +63,7 @@ const del = async userId => {
 
 module.exports = {
   create,
+  get,
   getOne,
   update,
   del

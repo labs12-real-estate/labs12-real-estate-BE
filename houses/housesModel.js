@@ -11,7 +11,7 @@ const create = async house => {
     return null;
   }
   //Destructure the created users ID from the array received from the insert method.
-  const [newHouseId] = await db('houses').insert(house);
+  const [newHouseId] = await db('houses').insert(house, 'houseId');
   //Find the created house based on the id we receieved from the insert method.
   const createdHouse = await db('houses')
     .where({ houseId: newHouseId })
