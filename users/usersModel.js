@@ -1,25 +1,64 @@
 const db = require('../database/dbConfig.js');
 
-module.exports = {
-  insert,
-  update,
-  remove,
-  getAll,
-  findById,
+const create = async user => {
+  if (!user.email || !user.password) {
+    return null;
+  }
+  //Destructure the created users ID from the array received from the insert method.
+  const [newUserId] = await db('users').insert(user);
+  //Find the created user based on the id we receieved from the insert method.
+  const createdUser = await db('users')
+    .where({ userId: newUserId })
+    .first();
+  //Return the created user.
+  return createdUser;
 };
 
-function insert() {
-}
+const getOne = async filter => {
+  //Return null if no filter is provided. Otherwise return the user if one is found, or null if none were found.
+  if (!filter) {
+    return null;
+  }
+  const foundUser = await db('users')
+    .where(filter)
+    .first();
+  if (!foundUser) {
+    return null;
+  }
+  return foundUser;
+};
 
-function update() {
-}
+const update = async (userId, props) => {
+  if (!userId || !props) {
+    return null;
+  }
+  const count = await db('users')
+    .where({ userId })
+    .update(props);
+  if (!count) {
+    return null;
+  }
+  const updatedUser = await getOne({ userId });
+  return updatedUser;
+};
 
-function remove() {
-}
+const del = async userId => {
+  if (!userId) {
+    return null;
+  }
+  console.log(await db('users').where({ userId }));
+  const deleted = await db('users')
+    .where({ userId })
+    .del();
+  if (!deleted) {
+    return null;
+  }
+  return true;
+};
 
-function getAll() {
-  return db('users');
-}
-
-function findById() {
-}
+module.exports = {
+  create,
+  getOne,
+  update,
+  del
+};

@@ -1,6 +1,9 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('houses', tbl => {
     tbl.increments('houseId');
+    tbl.integer('point_estimate_valuation');
+    tbl.integer('valuation_low');
+    tbl.integer('valuation_high');
     tbl.string('description');
     tbl.string('backdrop_image');
     tbl.string('photos_path');

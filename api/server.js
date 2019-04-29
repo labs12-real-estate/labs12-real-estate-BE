@@ -14,4 +14,3 @@ server.get('/', async (req, res) => {
 });
 
 module.exports = server;
-

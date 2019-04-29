@@ -71,14 +71,90 @@ Nodemon is used for restarting your Node.js Application automatically if any of 
 
 # Endpoints
 
-### GET
+## User Endpoints
 
-- 
+### POST /api/users/
+
+- Returns an object with the new user's information.
+
+- {"message": "Both email and password are required"} will be return if either email or password property is missing.
+
+- Request Example:
+
+```
+{
+    "email": "David.Lam@gmail.com",
+    "password": "newpassword"
+}
+```
 
 - Response Example:
 
 ```
 {
+    "userId": 151,
+    "email": "David.Lam@yahoo.com",
+    "password": "newpassword",
+    "profile_image": null
+}
+```
+
+### GET /api/users/:id
+
+- Returns an object with the user's information.
+
+- {"message": "Can not find a user with that ID."} will be return if the user id is not in the database.
+
+- Response Example:
+
+```
+{
+    "userId": 1,
+    "email": "Jamir.Flatley41@gmail.com",
+    "password": "HtYB1fVXr9zA9DE",
+    "profile_image": "http://lorempixel.com/640/480"
+}
+```
+
+### PUT /api/users/:id
+
+- Returns an object with the user's updated information.
+
+- If you are changing user's password, the currentPassword property is required. Otherwise, it can be omitted.
+{"message": "You must provide your current password if you want to change it to something else."}
+
+- Request Example:
+
+```
+{
+    "email": "David.Lam@gmail.com",
+    "password": "newpassword",
+    "currentPassword": "HtYB1fVXr9zA9DE"
+}
+```
+
+- Response Example:
+
+```
+{
+    "userId": 1,
+    "email": "David.Lam@gmail.com",
+    "password": "newpassword",
+    "profile_image": "http://lorempixel.com/640/480"
+}
+```
+
+### DELETE /api/users/:id
+
+- Returns a message saying deletion of account is successful.
+
+- {"message": "No user found with that ID."} will be return if the user id is not in the database.
+
+- Response Example:
+
+```
+{
+    "message": "Account deleted."
 }
 ```
 
