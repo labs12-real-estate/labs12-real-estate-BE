@@ -1,7 +1,7 @@
 const data = require('../seeding_data');
 
-exports.seed = function(knex, Promise) {
-  return knex('users')
+exports.seed = async function(knex, Promise) {
+  knex('users')
     .truncate()
     .then(function() {
       return knex('users').insert(data.users);

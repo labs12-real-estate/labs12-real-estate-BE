@@ -9,14 +9,15 @@ exports.up = function(knex, Promise) {
     tbl.string('photos_path');
     tbl.string('recent_remodel');
     tbl.string('upgrades');
-    tbl.integer('userId');
+    tbl
+      .integer('userId')
+      .unsigned()
+      .notNullable();
     tbl
       .foreign('userId')
-      .unsigned()
       .references('users.userId')
       .onDelete('CASCADE')
-      .onUpdate('CASCADE')
-      .notNullable();
+      .onUpdate('CASCADE');
 
     tbl.string('user_data_countertops');
     tbl.integer('user_data_ac_furnace_age');
