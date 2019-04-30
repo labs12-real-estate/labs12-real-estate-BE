@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 
 const Houses = require('./housesModel.js');
 
@@ -67,6 +68,31 @@ router.put('/:id', async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: 'Internal error.' });
   }
+});
+
+router.post('/getvalue', (req, res) => {
+  const address = req.body.address;
+  const key = 'AIzaSyBQG-Y3BtowkEvTBq3dPPROa-GuMm1Rfpk';
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`;
+  axios
+    .get(url)
+    .then(data => {
+      let complete_address = data.data.results[0].formatted_address;
+      complete_address = complete_address.slice(0, -5); // remove 5 characters ", USA" at the end
+      // complete_address = complete_address.slice(0, -6) + ',' + complete_address.slice(-6, complete_address.length); // insert comma between state and zipcode
+      axios
+        .post('http://housemvp-env.9zyhxaxxek.us-east-1.elasticbeanstalk.com/', { address: complete_address })
+        .then(data => {
+          data.data.address = complete_address;
+          res.status(200).json(data.data);
+        })
+        .catch(err => {
+          return res.status(500).json({ err });
+        });
+    })
+    .catch(err => {
+      return res.status(500).json({ err });
+    });
 });
 
 module.exports = router;
