@@ -24,7 +24,10 @@ for (let i = 1; i <= 50; i++) {
       min: 1,
       max: 5
     }),
-    parcel_data_num_bathrooms: faker.random.arrayElement([1, 1.5, 2, 2.5, 3]),
+    parcel_data_num_bathrooms: faker.random.number({
+      min: 1,
+      max: 3
+    }),
     parcel_data_garage_size: faker.random.number({
       min: 0,
       max: 3
