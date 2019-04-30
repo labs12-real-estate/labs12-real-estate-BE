@@ -40,4 +40,33 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const foundHouse = await Houses.getOne({ houseId: req.params.id });
+    if (!foundHouse) {
+      return res.status(404).json({ message: 'No house found with that ID.' });
+    }
+    const deleted = await Houses.del(req.params.id);
+    if (deleted) {
+      return res.status(200).json({ message: 'House information deleted.' });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Internal error.' });
+  }
+});
+
+router.put('/:id', async (req, res) => {
+  try {
+    const foundHouse = await Houses.getOne({ houseId: req.params.id });
+    if (!foundHouse) {
+      return res.status(404).json({ message: 'No house found with that ID.' });
+    }
+    const updatedHouse = await Houses.update(req.params.id, req.body);
+    return res.status(201).json(updatedHouse);
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal error.' });
+  }
+});
+
 module.exports = router;

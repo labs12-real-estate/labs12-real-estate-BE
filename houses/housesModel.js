@@ -46,4 +46,25 @@ const getMany = async filter => {
   return foundHouses;
 };
 
-module.exports = { getOne, getMany, create };
+const del = async houseId => {
+  const deleted = await db('houses')
+    .where({ houseId })
+    .del();
+  if (!deleted) {
+    return null;
+  }
+  return true;
+};
+
+const update = async (houseId, props) => {
+  const count = await db('houses')
+    .where({ houseId })
+    .update(props);
+  if (!count) {
+    return null;
+  }
+  const updatedHouse = await getOne({ houseId });
+  return updatedHouse;
+};
+
+module.exports = { getOne, getMany, create, del, update };

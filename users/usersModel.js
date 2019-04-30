@@ -48,10 +48,6 @@ const update = async (userId, props) => {
 };
 
 const del = async userId => {
-  if (!userId) {
-    return null;
-  }
-  console.log(await db('users').where({ userId }));
   const deleted = await db('users')
     .where({ userId })
     .del();
