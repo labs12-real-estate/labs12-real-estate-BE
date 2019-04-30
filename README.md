@@ -1,4 +1,5 @@
 # labs12-real-estate-BE
+# https://labs12-real-estate.herokuapp.com/
 # https://trello.com/b/suh91Xsm/labs12-my-house
 
 # API For MyHouse 
@@ -71,14 +72,159 @@ Nodemon is used for restarting your Node.js Application automatically if any of 
 
 # Endpoints
 
-### GET
+## User Endpoints
 
-- 
+### POST /api/users/
+
+- Returns an object with the new user's information.
+
+- {"message": "Both email and password are required"} will be return if either email or password property is missing.
+
+- Request Example:
+
+```
+{
+    "email": "David.Lam@gmail.com",
+    "password": "newpassword"
+}
+```
 
 - Response Example:
 
 ```
 {
+    "userId": 151,
+    "email": "David.Lam@yahoo.com",
+    "password": "newpassword",
+    "profile_image": null
 }
 ```
+
+### GET /api/users/:id
+
+- Returns an object with the user's information.
+
+- {"message": "Can not find a user with that ID."} will be return if the user id is not in the database.
+
+- Response Example:
+
+```
+{
+    "userId": 1,
+    "email": "Jamir.Flatley41@gmail.com",
+    "password": "HtYB1fVXr9zA9DE",
+    "profile_image": "http://lorempixel.com/640/480"
+}
+```
+
+### PUT /api/users/:id
+
+- Returns an object with the user's updated information.
+
+- If you are changing user's password, the currentPassword property is required. Otherwise, it can be omitted.
+{"message": "You must provide your current password if you want to change it to something else."}
+
+- Request Example:
+
+```
+{
+    "email": "David.Lam@gmail.com",
+    "password": "newpassword",
+    "currentPassword": "HtYB1fVXr9zA9DE"
+}
+```
+
+- Response Example:
+
+```
+{
+    "userId": 1,
+    "email": "David.Lam@gmail.com",
+    "password": "newpassword",
+    "profile_image": "http://lorempixel.com/640/480"
+}
+```
+
+### DELETE /api/users/:id
+
+- Returns a message saying deletion of account is successful.
+
+- {"message": "No user found with that ID."} will be return if the user id is not in the database.
+
+- Response Example:
+
+```
+{
+    "message": "Account deleted."
+}
+```
+
+## House Endpoints
+
+### POST /api/houses/
+
+- Returns an object with the new house's information.
+
+- userId is required and must already exist in database.
+
+- Request Example:
+
+```
+{
+	"userId": "1",
+    "description": "Ut unde numquam nisi minus.",
+    "backdrop_image": "http://lorempixel.com/640/480",
+    "recent_remodel": "Laborum aut est qui eligendi qui consequuntur dignissimos.",
+    "parcel_data_address": "33946 Hoeger River"
+}
+```
+
+- Response Example:
+
+```
+{
+    "houseId": 154,
+    "point_estimate_valuation": null,
+    "valuation_low": null,
+    "valuation_high": null,
+    "description": "Ut unde numquam nisi minus.",
+    "backdrop_image": "http://lorempixel.com/640/480",
+    "photos_path": null,
+    "recent_remodel": "Laborum aut est qui eligendi qui consequuntur dignissimos.",
+    "upgrades": null,
+    "userId": 1,
+    ...
+}
+```
+
+### GET /api/houses/:id
+
+- Returns an object with the house's information.
+
+- {"message": "Cannot find a house with that ID."} will be return if the houseId is not in the database.
+
+- Response Example:
+
+```
+{
+    "houseId": 154,
+    "point_estimate_valuation": null,
+    "valuation_low": null,
+    "valuation_high": null,
+    "description": "Ut unde numquam nisi minus.",
+    "backdrop_image": "http://lorempixel.com/640/480",
+    "photos_path": null,
+    "recent_remodel": "Laborum aut est qui eligendi qui consequuntur dignissimos.",
+    "upgrades": null,
+    "userId": 1,
+    ...
+}
+```
+
+### GET /api/houses/ofuser/:id
+
+- Returns an array of houses belong to a user.
+
+- {"message": "Cannot find any house with that userId."} will be return if the userId is not in database or that user does not have any house saved.  
+
 

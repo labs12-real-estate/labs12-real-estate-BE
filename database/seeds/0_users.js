@@ -1,9 +1,9 @@
 const data = require('../seeding_data');
 
 exports.seed = function(knex, Promise) {
-  return knex('houses')
-    .truncate()
+  return knex('users')
+    .del()
     .then(function() {
-      return knex('houses').insert(data.houses);
+      return knex('users').insert(data.users);
     });
 };

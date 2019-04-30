@@ -1,16 +1,23 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('houses', tbl => {
     tbl.increments('houseId');
+    tbl.integer('point_estimate_valuation');
+    tbl.integer('valuation_low');
+    tbl.integer('valuation_high');
     tbl.string('description');
     tbl.string('backdrop_image');
     tbl.string('photos_path');
     tbl.string('recent_remodel');
     tbl.string('upgrades');
-    tbl.integer('userId');
+    tbl
+      .integer('userId')
+      .unsigned()
+      .notNullable();
     tbl
       .foreign('userId')
       .references('users.userId')
-      .onDelete('CASCADE');
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
 
     tbl.string('user_data_countertops');
     tbl.integer('user_data_ac_furnace_age');
