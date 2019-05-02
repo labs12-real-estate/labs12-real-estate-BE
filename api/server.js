@@ -6,7 +6,7 @@ const housesRouter = require('../houses/housesRouter.js');
 const server = express();
 
 server.use(express.json());
-server.use(cors);
+server.use(cors());
 
 server.use('/api/users', usersRouter);
 server.use('/api/houses', housesRouter);
