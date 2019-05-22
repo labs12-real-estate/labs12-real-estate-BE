@@ -78,7 +78,7 @@ router.post('/getvalue', (req, res) => {
     .post('http://valuator.us-east-1.elasticbeanstalk.com', { address })
     .then(data => {
       // data.data.address = address;
-      res.status(200).json(data.data);
+      res.status(200).json(data);
     })
     .catch(err => {
       return res.status(500).json({ err });
