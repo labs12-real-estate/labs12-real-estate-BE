@@ -81,7 +81,7 @@ router.post('/getvalue', (req, res) => {
       complete_address = complete_address.slice(0, -5); // remove 5 characters ", USA" at the end
       // complete_address = complete_address.slice(0, -6) + ',' + complete_address.slice(-6, complete_address.length); // insert comma between state and zipcode
       axios
-        .post('http://testing1-env.q5yaggzwbs.us-east-2.elasticbeanstalk.com/api', { address: complete_address })
+        .post('http://valuate.us-east-1.elasticbeanstalk.com/', { address: complete_address })
         .then(data => {
           data.data.address = complete_address;
           res.status(200).json(data.data);
