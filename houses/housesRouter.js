@@ -95,4 +95,15 @@ router.post('/getvalue', (req, res) => {
     });
 });
 
+router.post('/getprecisevalue', (req, res) => {
+  axios
+    .post('http://valuate.us-east-1.elasticbeanstalk.com/survey', req.body)
+    .then(data => {
+      res.status(200).json(data.data);
+    })
+    .catch(err => {
+      return res.status(500).json({ err });
+    });
+});
+
 module.exports = router;
