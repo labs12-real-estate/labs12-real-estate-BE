@@ -71,11 +71,24 @@ router.put('/:id', async (req, res) => {
 });
 
 router.post('/getvalue', (req, res) => {
+  const address = req.body.address;
+  const key = 'AIzaSyBQG-Y3BtowkEvTBq3dPPROa-GuMm1Rfpk';
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`;
   axios
-    .post('http://testing1-env.q5yaggzwbs.us-east-2.elasticbeanstalk.com/api', { address: req.body.address })
-    // .post('http://valuate.us-east-1.elasticbeanstalk.com/', { address: req.body.address })
+    .get(url)
     .then(data => {
-      return res.status(200).json(data.data);
+      let complete_address = data.data.results[0].formatted_address;
+      complete_address = complete_address.slice(0, -5); // remove 5 characters ", USA" at the end
+      // complete_address = complete_address.slice(0, -6) + ',' + complete_address.slice(-6, complete_address.length); // insert comma between state and zipcode
+      axios
+        .post('http://testing1-env.q5yaggzwbs.us-east-2.elasticbeanstalk.com/api', { address: complete_address })
+        .then(data => {
+          data.data.address = complete_address;
+          res.status(200).json(data.data);
+        })
+        .catch(err => {
+          return res.status(500).json({ err });
+        });
     })
     .catch(err => {
       return res.status(500).json({ err });
