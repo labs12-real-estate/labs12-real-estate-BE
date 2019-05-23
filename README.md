@@ -227,4 +227,69 @@ Nodemon is used for restarting your Node.js Application automatically if any of 
 
 - {"message": "Cannot find any house with that userId."} will be return if the userId is not in database or that user does not have any house saved.  
 
+### POST /api/houses/getvalue
 
+- Returns an initial value and infos for an address
+
+- Request Example:
+
+```
+{
+    "address": "4565 White Rd, Pierson, MI, USA"
+}
+```
+
+- Response Example:
+
+```
+{
+    "low": 5064997.445223227,
+    "high": 6390140.1363238115,
+    "parcel": {
+        "latitude": "43.360028",
+        "longitude": "-85.543544",
+        "tax_year": "2018",
+        "tax_value": "80600.0",
+        "year_built": "1980",
+        "property_size": "30492",
+        "home_size": "924",
+        "bathrooms": "1.0",
+        "bedrooms": "3",
+        "last_sold_date": null,
+        "last_sold_price": null,
+        "zestimate_amount": "88850",
+        "zestimate_last_updated": "05/22/2019",
+        "zestimate_value_change": "-206",
+        "zestimate_valuation_range_high": "105732",
+        "zestimate_valuationRange_low": "74634",
+        "zestimate_percentile": "0"
+    },
+    "address": "4565 White Rd, Pierson, MI 49339"
+}
+```
+
+### POST /api/houses/getprecisevalue
+
+- Returns a more precise value of a house using user's input
+
+- Request Example:
+
+```
+{
+    "address": "4565 White Rd, Pierson, MI 49339",
+    "countertops": "Marble/Quartz",
+	"flooring": "Hardwood",
+	"roofAge": "15+",
+	"furnaceAge": "15+"
+}
+```
+
+- Response Example:
+
+```
+{
+    "value": 5931637.949887535,
+    "low": 5269066.604337242,
+    "high": 6594209.295437827
+}
+```
