@@ -74,28 +74,27 @@ router.post('/getvalue', (req, res) => {
   const address = req.body.address;
   const key = process.env.GOOGLE_API_KEY;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`;
-  axios
-    .get(url)
-    .then(data => {
-      let complete_address = data.data.results[0].formatted_address;
-      complete_address = complete_address.slice(0, -5);
-      console.log(complete_address) // remove 5 characters ", USA" at the end
-      // complete_address = complete_address.slice(0, -6) + ',' + complete_address.slice(-6, complete_address.length); // insert comma between state and zipcode
-      axios
-        .post('JustReturnParcel-env.kws5pjgawj.us-east-2.elasticbeanstalk.com', { address: complete_address })
-        .then(data => {
-          data.data.address = complete_address;
-          res.status(200).json(data.data);
-        })
-        .catch(err => {
-          return res.status(500).json({ err });
-        });
+  axios.get(url).then(data => {
+    let complete_address = data.data.results[0].formatted_address;
+    complete_address = complete_address.slice(0, -5);
+    // remove 5 characters ", USA" at the end
+    // complete_address = complete_address.slice(0, -6) + ',' + complete_address.slice(-6, complete_address.length); // insert comma between state and zipcode
+    axios
+      .post('JustReturnParcel-env.kws5pjgawj.us-east-2.elasticbeanstalk.com', { address: complete_address })
+      .then(data => {
+        data.data.address = complete_address;
+        res.status(200).json(data.data);
+      })
+      .catch(err => {
+        return res.status(500).json({ err });
+      });
     //   zillow.get('GetDeepSearchResults', {address: complete_address, citystatezip: complete_address.slice(-2)}).then(data => {console.log(data);res.status(200).json(data.addressWithUpdates)
     //     })
     // })
     // .catch(err => {
     //   return res.status(500).json({ err });
     // });
+  });
 });
 
 router.post('/getprecisevalue', (req, res) => {
