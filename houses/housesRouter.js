@@ -1,8 +1,8 @@
 const express = require('express');
 const axios = require('axios');
-
+const Zillow = require('node-zillow');
 const Houses = require('./housesModel.js');
-
+var zillow = new Zillow('X1-ZWz1860i3vydqj_9vdv4');
 const router = express.Router();
 
 router.get('/:id', async (req, res) => {
@@ -73,26 +73,45 @@ router.put('/:id', async (req, res) => {
 router.post('/getvalue', (req, res) => {
   const address = req.body.address;
   const key = process.env.GOOGLE_API_KEY;
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`;
-  axios
-    .get(url)
-    .then(data => {
-      let complete_address = data.data.results[0].formatted_address;
-      complete_address = complete_address.slice(0, -5); // remove 5 characters ", USA" at the end
-      // complete_address = complete_address.slice(0, -6) + ',' + complete_address.slice(-6, complete_address.length); // insert comma between state and zipcode
-      axios
-        .post('http://valuate.us-east-1.elasticbeanstalk.com/', { address: complete_address })
-        .then(data => {
-          data.data.address = complete_address;
-          res.status(200).json(data.data);
-        })
-        .catch(err => {
-          return res.status(500).json({ err });
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyDmf30aYRrAHvU1l1P_2ftOGntupwEyAlk`;
+  axios.get(url).then(data => {
+    let complete_address = data.data.results[0].formatted_address;
+    complete_address = complete_address.slice(0, -5);
+    // remove 5 characters ", USA" at the end
+    // complete_address = complete_address.slice(0, -6) + ',' + complete_address.slice(-6, complete_address.length); // insert comma between state and zipcode
+    // axios
+    //   .post('JustReturnParcel-env.kws5pjgawj.us-east-2.elasticbeanstalk.com', { address: complete_address, citystatezip: complete_address.slice(-5) })
+    //   .then(data => {
+    //     // data.data.address = complete_address;
+    //     res.status(200).json(data.data);
+    //   })
+    //   .catch(err => {
+    //     return res.status(500).json({ err });
+    //   });
+    zillow
+      .get('GetDeepSearchResults', { address: complete_address, citystatezip: complete_address.slice(-5) })
+      .then(data => {
+        const valueRange = data.response.results.result[0].zestimate[0].valuationRange[0];
+        const low = valueRange.low[0]._;
+        const high = valueRange.high[0]._;
+        res.status(200).json({
+          address: complete_address,
+          parcel: {
+            home_size: data.response.results.result[0].finishedSqFt[0],
+            property_size: data.response.results.result[0].lotSizeSqFt[0],
+            bedrooms: data.response.results.result[0].bedrooms[0],
+            bathrooms: data.response.results.result[0].bathrooms[0],
+            year_built: data.response.results.result[0].yearBuilt[0],
+            zestimate_valuationRange_low: low,
+            zestimate_valuation_range_high: high,
+            zestimate_amount: data.response.results.result[0].zestimate[0].amount[0]._
+          }
         });
-    })
-    .catch(err => {
-      return res.status(500).json({ err });
-    });
+      })
+      .catch(err => {
+        return res.status(500).json({ err });
+      });
+  });
 });
 
 router.post('/getprecisevalue', (req, res) => {
