@@ -95,18 +95,16 @@ router.post('/getvalue', (req, res) => {
         const low = valueRange.low[0]._;
         const high = valueRange.high[0]._;
         res.status(200).json({
-          data: {
-            address: complete_address,
-            parcel: {
-              home_size: data.response.results.result[0].finishedSqFt[0],
-              property_size: data.response.results.result[0].lotSizeSqFt[0],
-              bedrooms: data.response.results.result[0].bedrooms[0],
-              bathrooms: data.response.results.result[0].bathrooms[0],
-              year_built: data.response.results.result[0].yearBuilt[0],
-              zestimate_valuationRange_low: low,
-              zestimate_valuation_range_high: high,
-              zestimate_amount: data.response.results.result[0].zestimate[0].amount[0]._
-            }
+          address: complete_address,
+          parcel: {
+            home_size: data.response.results.result[0].finishedSqFt[0],
+            property_size: data.response.results.result[0].lotSizeSqFt[0],
+            bedrooms: data.response.results.result[0].bedrooms[0],
+            bathrooms: data.response.results.result[0].bathrooms[0],
+            year_built: data.response.results.result[0].yearBuilt[0],
+            zestimate_valuationRange_low: low,
+            zestimate_valuation_range_high: high,
+            zestimate_amount: data.response.results.result[0].zestimate[0].amount[0]._
           }
         });
       })
