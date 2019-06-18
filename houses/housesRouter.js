@@ -74,44 +74,47 @@ router.post('/getvalue', (req, res) => {
   const address = req.body.address;
   const key = process.env.GOOGLE_API_KEY;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyDmf30aYRrAHvU1l1P_2ftOGntupwEyAlk`;
-  axios.get(url).then(data => {
-    let complete_address = data.data.results[0].formatted_address;
-    complete_address = complete_address.slice(0, -5);
-    // remove 5 characters ", USA" at the end
-    // complete_address = complete_address.slice(0, -6) + ',' + complete_address.slice(-6, complete_address.length); // insert comma between state and zipcode
-    // axios
-    //   .post('JustReturnParcel-env.kws5pjgawj.us-east-2.elasticbeanstalk.com', { address: complete_address, citystatezip: complete_address.slice(-5) })
-    //   .then(data => {
-    //     // data.data.address = complete_address;
-    //     res.status(200).json(data.data);
-    //   })
-    //   .catch(err => {
-    //     return res.status(500).json({ err });
-    //   });
-    zillow
-      .get('GetDeepSearchResults', { address: complete_address, citystatezip: complete_address.slice(-5) })
-      .then(data => {
-        const valueRange = data.response.results.result[0].zestimate[0].valuationRange[0];
-        const low = valueRange.low[0]._;
-        const high = valueRange.high[0]._;
-        res.status(200).json({
-          address: complete_address,
-          parcel: {
-            home_size: data.response.results.result[0].finishedSqFt[0],
-            property_size: data.response.results.result[0].lotSizeSqFt[0],
-            bedrooms: data.response.results.result[0].bedrooms[0],
-            bathrooms: data.response.results.result[0].bathrooms[0],
-            year_built: data.response.results.result[0].yearBuilt[0],
-            zestimate_valuationRange_low: low,
-            zestimate_valuation_range_high: high,
-            zestimate_amount: data.response.results.result[0].zestimate[0].amount[0]._
-          }
+  axios
+    .get(url)
+    .then(data => {
+      console.log(data.data.results[0].formatted_address.split(',', 3));
+      const addresscitystatezip = data.data.results[0].formatted_address.split(',', 3);
+      const google_address = addresscitystatezip[0];
+      const google_city = addresscitystatezip[1];
+      const google_state_zip = addresscitystatezip[2];
+
+      zillow
+        .get('GetDeepSearchResults', { address: `${google_address}`, citystatezip: `${google_city}${google_state_zip}` })
+        .then(data => {
+          const valueRange = data.response.results.result[0].zestimate[0].valuationRange[0];
+          const low = valueRange.low[0]._;
+          const high = valueRange.high[0]._;
+          const home_size = 'finishedSqFt' in data.response.results.result[0] ? data.response.results.result[0].finishedSqFt[0] : null;
+          const property_size = 'lotSizeSqFt' in data.response.results.result[0] ? data.response.results.result[0].lotSizeSqFt[0] : null;
+          const bedrooms = 'bedrooms' in data.response.results.result[0] ? data.response.results.result[0].bedrooms[0] : null;
+          const bathrooms = 'bathrooms' in data.response.results.result[0] ? data.response.results.result[0].bathrooms[0] : null;
+          const year_built = 'yearBuilt' in data.response.results.result[0] ? data.response.results.result[0].yearBuilt[0] : null;
+          res.status(200).json({
+            address: `${google_address}${google_city},${google_state_zip}`,
+            parcel: {
+              home_size,
+              property_size,
+              bedrooms,
+              bathrooms,
+              year_built,
+              zestimate_valuationRange_low: low,
+              zestimate_valuation_range_high: high,
+              zestimate_amount: data.response.results.result[0].zestimate[0].amount[0]._
+            }
+          });
+        })
+        .catch(err => {
+          return res.status(500).json(`Zillow Error: ${err}`);
         });
-      })
-      .catch(err => {
-        return res.status(500).json({ err });
-      });
-  });
+    })
+    .catch(err => {
+      return res.status(500).json({ err });
+    });
 });
 
 router.post('/getprecisevalue', (req, res) => {
