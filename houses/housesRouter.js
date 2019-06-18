@@ -128,4 +128,67 @@ router.post('/getprecisevalue', (req, res) => {
     });
 });
 
+router.post('/getprecisevaluemock', (req, res) => {
+  const { low, high, countertops, flooring, roofAge, furnaceAge } = req.body;
+  let result = (low + high) / 2;
+  const difference = (high - low) / 2;
+  switch (countertops) {
+    case 'Marble/Quartz':
+      result += (difference * 25) / 100;
+      break;
+    case 'Granite/Concrete':
+      result += (difference * 12.5) / 100;
+      break;
+    case 'Formica/Tile':
+      result -= (difference * 12.5) / 100;
+      break;
+    case 'Laminate':
+      result -= (difference * 25) / 100;
+      break;
+  }
+  switch (flooring) {
+    case 'Hardwood':
+      result += (difference * 25) / 100;
+      break;
+    case 'Ceramic Tile':
+      result += (difference * 12.5) / 100;
+      break;
+    case 'Porcelain Tile/Concrete':
+      result -= (difference * 12.5) / 100;
+      break;
+    case 'Engineered/Laminate':
+      result -= (difference * 25) / 100;
+      break;
+  }
+  switch (roofAge) {
+    case '0-4 years':
+      result += (difference * 30) / 100;
+      break;
+    case '5-9 years':
+      result += (difference * 15) / 100;
+      break;
+    case '10-14 years':
+      result -= (difference * 15) / 100;
+      break;
+    case '15+':
+      result -= (difference * 30) / 100;
+      break;
+  }
+  switch (furnaceAge) {
+    case '0-4 years':
+      result += (difference * 20) / 100;
+      break;
+    case '5-9 years':
+      result += (difference * 10) / 100;
+      break;
+    case '10-14 years':
+      result -= (difference * 10) / 100;
+      break;
+    case '15+':
+      result -= (difference * 20) / 100;
+      break;
+  }
+  return res.status(200).json({ value: result });
+});
+
 module.exports = router;
