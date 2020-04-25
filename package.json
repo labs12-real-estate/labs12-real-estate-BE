@@ -12,7 +12,7 @@
     "testEnvirnoment": "node"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.13.2",
     "cors": "^2.8.5",
