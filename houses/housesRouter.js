@@ -113,7 +113,7 @@ router.post('/getvalue', (req, res) => {
         });
     })
     .catch(err => {
-      return res.status(500).json({ err });
+      return res.status(500).json({ err, error_message: 'this catch fired' });
     });
 });
 
