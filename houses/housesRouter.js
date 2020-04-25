@@ -74,6 +74,7 @@ router.post('/getvalue', (req, res) => {
   const address = req.body.address;
   const key = process.env.GOOGLE_API_KEY;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`;
+  console.log(url);
   axios
     .get(url)
     .then(data => {
